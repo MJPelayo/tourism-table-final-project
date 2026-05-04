@@ -159,13 +159,12 @@ export function createDataService(eventBus, dataUrl) {
    *        to row.year (a number), convert as needed.
    */
   function applyFilters(rows, filters) {
-    // TODO (2):
-    //   - Return rows.filter(row => every non-empty filter matches).
-    //   - Check filters.district: if non-empty, row.district must equal it.
-    //   - Check filters.purpose:  if non-empty, row.purpose must equal it.
-    //   - Check filters.year:     if non-empty, String(row.year) must equal it.
-    //                             (Because the select emits strings.)
-
+    return rows.filter(row => {
+      if (filters.district && row.district !== filters.district) return false;
+      if (filters.purpose && row.purpose !== filters.purpose) return false;
+      if (filters.year && String(row.year) !== filters.year) return false;
+      return true;
+    });
   }
 
   /**
