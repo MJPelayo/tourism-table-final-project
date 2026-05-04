@@ -142,12 +142,12 @@ export function createDataService(eventBus, dataUrl) {
    * Empty search returns rows unchanged.
    */
   function applySearch(rows, searchTerm) {
-    // TODO (1):
-    //   - If searchTerm is empty (after trimming), return rows as-is.
-    //     (Returning the same reference is fine — it's a read.)
-    //   - Otherwise return rows.filter(...) where the row's `country`
-    //     (lowercased) includes the searchTerm (lowercased and trimmed).
-
+    const trimmedTerm = searchTerm.trim();
+    if (trimmedTerm === '') {
+      return rows;
+    }
+    const lowerSearch = trimmedTerm.toLowerCase();
+    return rows.filter(row => row.country.toLowerCase().includes(lowerSearch));
   }
 
   /**
