@@ -395,13 +395,13 @@ export function createDataService(eventBus, dataUrl) {
    * Note: search allRows, not just the visible page. The row might be off-screen.
    */
   function selectRow(id) {
-    // TODO (BONUS-1):
-    //   - Coerce id to a number (may come in as a string from dataset).
-    //   - Find the row in state.allRows where row.id === id.
-    //   - If not found, return silently.
-    //   - state.selectedRowId = id
-    //   - Emit 'row:selected' with { row }.
-
+    const numericId = Number(id);
+    const row = state.allRows.find(r => r.id === numericId);
+    if (!row) {
+      return;
+    }
+    state.selectedRowId = numericId;
+    eventBus.emit('row:selected', { row });
   }
 
   /**
@@ -409,11 +409,11 @@ export function createDataService(eventBus, dataUrl) {
    * Emits 'row:deselected' only if something was actually selected.
    */
   function clearSelection() {
-    // TODO (BONUS-2):
-    //   - If state.selectedRowId is null, return (nothing to do).
-    //   - state.selectedRowId = null
-    //   - Emit 'row:deselected' with null payload.
-
+    if (state.selectedRowId === null) {
+      return;
+    }
+    state.selectedRowId = null;
+    eventBus.emit('row:deselected', null);
   }
 
   return Object.freeze({
