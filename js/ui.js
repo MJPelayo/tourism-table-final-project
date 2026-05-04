@@ -137,14 +137,24 @@ export function createUI(eventBus, dataService, rootEl) {
    * If the array is empty, render a single "no results" row.
    */
   function renderTable(visibleRows) {
-    // TODO (2):
-    //   - Clear els.tbody (replaceChildren() is idiomatic).
-    //   - If visibleRows.length === 0:
-    //       * Create <tr class="empty-row"><td colspan="7">No results match
-    //         your search and filters.</td></tr> and append.
-    //       * Return early.
-    //   - Otherwise build all rows into a DocumentFragment, then append once.
-
+    els.tbody.replaceChildren();
+    
+    if (visibleRows.length === 0) {
+      const emptyRow = document.createElement('tr');
+      emptyRow.className = 'empty-row';
+      const emptyCell = document.createElement('td');
+      emptyCell.colSpan = 7;
+      emptyCell.textContent = 'No results match your search and filters.';
+      emptyRow.appendChild(emptyCell);
+      els.tbody.appendChild(emptyRow);
+      return;
+    }
+    
+    const fragment = document.createDocumentFragment();
+    visibleRows.forEach(row => {
+      fragment.appendChild(buildRowElement(row));
+    });
+    els.tbody.appendChild(fragment);
   }
 
   /**
