@@ -327,13 +327,12 @@ export function createDataService(eventBus, dataUrl) {
    * @param {string} value   empty string means "clear this filter"
    */
   function setFilter(key, value) {
-    // TODO (10):
-    //   - Guard: if key is not one of the three allowed keys, return.
-    //     (Fail loud is fine — throw a TypeError.)
-    //   - state.view.filters[key] = String(value)
-    //   - state.view.page = 1
-    //   - recomputeAndEmit()
-
+    if (key !== 'district' && key !== 'purpose' && key !== 'year') {
+      throw new TypeError(`Invalid filter key: ${key}. Must be 'district', 'purpose', or 'year'.`);
+    }
+    state.view.filters[key] = String(value);
+    state.view.page = 1;
+    recomputeAndEmit();
   }
 
   /**
