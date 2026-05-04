@@ -163,13 +163,20 @@ export function createUI(eventBus, dataService, rootEl) {
    * the correct class to the active header.
    */
   function renderSortIndicators(sortColumn, sortDirection) {
-    // TODO (3):
-    //   - For every header in els.sortHeaders:
-    //       * Remove 'is-sort-asc' and 'is-sort-desc'.
-    //   - If sortColumn is null, return (nothing is sorted).
-    //   - Find the header whose data-sort-column === sortColumn.
-    //   - Add 'is-sort-asc' or 'is-sort-desc' based on sortDirection.
-
+    els.sortHeaders.forEach(header => {
+      header.classList.remove('is-sort-asc', 'is-sort-desc');
+    });
+    
+    if (sortColumn === null) {
+      return;
+    }
+    
+    for (const header of els.sortHeaders) {
+      if (header.getAttribute('data-sort-column') === sortColumn) {
+        header.classList.add(`is-sort-${sortDirection}`);
+        break;
+      }
+    }
   }
 
   /**
