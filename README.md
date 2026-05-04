@@ -148,7 +148,8 @@ Your submission is complete when all of these pass:
 | **Service — event contract**              | 6      | Exact event names used; payload shapes correct; no invented events.                                                        |
 | **UI — table rendering**                  | 8      | Correct `<tr>` structure with 7 cells; purpose badge; `num` class on numeric cells; commas on arrivals; empty-state row.   |
 | **UI — sort indicators**                  | 4      | Headers toggle `is-sort-asc` / `is-sort-desc` correctly.                                                                   |
-| **UI — pagination rendering**             | 4      | Page info text; disabled states correct on edges.                                                                          |
+| **UI — pagination rendering**             | 4      | Page info text; disabled states correct on edges.                                                                       
+   |
 | **UI — controls wiring**                  | 6      | Search, filters, reset button, sort clicks all forward to service.                                                         |
 | **UI — subscription & cleanup**           | 6      | All events subscribed via the tracked helper; `unmount()` cleans up DOM listeners and bus subscriptions.                   |
 | **UI — event delegation & DOM hygiene**   | 6      | Header click uses `closest()`; `textContent` never `innerHTML`; `DocumentFragment` used when appending many rows.          |
