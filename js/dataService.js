@@ -223,10 +223,8 @@ export function createDataService(eventBus, dataUrl) {
    * Pages are 1-based. Returns a NEW array.
    */
   function applyPagination(rows, page, pageSize) {
-    // TODO (4):
-    //   - startIndex = (page - 1) * pageSize
-    //   - return rows.slice(startIndex, startIndex + pageSize)
-
+    const startIndex = (page - 1) * pageSize;
+    return rows.slice(startIndex, startIndex + pageSize);
   }
 
   /**
