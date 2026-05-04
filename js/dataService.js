@@ -356,10 +356,8 @@ export function createDataService(eventBus, dataUrl) {
    * Set the page directly. Clamping happens in recomputeAndEmit.
    */
   function setPage(page) {
-    // TODO (12):
-    //   - state.view.page = Number(page) || 1
-    //   - recomputeAndEmit()
-
+    state.view.page = Number(page) || 1;
+    recomputeAndEmit();
   }
 
   /**
