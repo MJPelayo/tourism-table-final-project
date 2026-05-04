@@ -186,13 +186,11 @@ export function createUI(eventBus, dataService, rootEl) {
    *   - Next/Last:  disabled when on last page
    */
   function renderPagination(page, pageCount) {
-    // TODO (4):
-    //   - els.pageInfo.textContent = `Page ${page} of ${pageCount}`
-    //   - els.pageFirst.disabled = page <= 1
-    //   - els.pagePrev.disabled  = page <= 1
-    //   - els.pageNext.disabled  = page >= pageCount
-    //   - els.pageLast.disabled  = page >= pageCount
-
+    els.pageInfo.textContent = `Page ${page} of ${pageCount}`;
+    els.pageFirst.disabled = page <= 1;
+    els.pagePrev.disabled = page <= 1;
+    els.pageNext.disabled = page >= pageCount;
+    els.pageLast.disabled = page >= pageCount;
   }
 
   /**
