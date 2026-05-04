@@ -151,9 +151,9 @@ export function createUI(eventBus, dataService, rootEl) {
     }
     
     const fragment = document.createDocumentFragment();
-    visibleRows.forEach(row => {
+    for (const row of visibleRows) {
       fragment.appendChild(buildRowElement(row));
-    });
+    }
     els.tbody.appendChild(fragment);
   }
 
