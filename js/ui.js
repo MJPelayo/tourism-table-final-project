@@ -198,14 +198,16 @@ export function createUI(eventBus, dataService, rootEl) {
    * Example: "Showing 20 of 142 rows (filtered from 276 total)"
    */
   function renderStatus(totalFiltered, totalAll, visibleCount) {
-    // TODO (5):
-    //   - Remove 'is-error' class from els.status (in case previous state was error).
-    //   - Build message:
-    //       * If totalFiltered === totalAll: `Showing ${visibleCount} of ${totalAll} rows`
-    //       * Else: `Showing ${visibleCount} of ${totalFiltered} rows (filtered from ${totalAll} total)`
-    //   - Use formatNumber() for each count.
-    //   - els.statusText.textContent = message
-
+    els.status.classList.remove('is-error');
+    
+    let message;
+    if (totalFiltered === totalAll) {
+      message = `Showing ${formatNumber(visibleCount)} of ${formatNumber(totalAll)} rows`;
+    } else {
+      message = `Showing ${formatNumber(visibleCount)} of ${formatNumber(totalFiltered)} rows (filtered from ${formatNumber(totalAll)} total)`;
+    }
+    
+    els.statusText.textContent = message;
   }
 
   function showStatus(message, opts = {}) {
