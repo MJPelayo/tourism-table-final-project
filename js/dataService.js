@@ -364,11 +364,19 @@ export function createDataService(eventBus, dataUrl) {
    * Reset search, filters, sort to defaults. Keeps the loaded data.
    */
   function resetView() {
-    // TODO (13):
-    //   - Reset state.view to a fresh default object (same shape as in
-    //     createInitialState, but do NOT reset allRows or status).
-    //   - recomputeAndEmit()
-
+    state.view = {
+      searchTerm: '',
+      filters: {
+        district: '',
+        purpose: '',
+        year: '',
+      },
+      sortColumn: null,
+      sortDirection: 'asc',
+      page: 1,
+      pageSize: PAGE_SIZE,
+    };
+    recomputeAndEmit();
   }
 
   // ==========================================================================
