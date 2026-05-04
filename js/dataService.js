@@ -257,17 +257,30 @@ export function createDataService(eventBus, dataUrl) {
    * Do NOT mutate state.allRows. Every helper returns a new array.
    */
   function recomputeAndEmit() {
-    // TODO (7):
-    //   - If state.status !== 'ready', return (nothing to compute yet).
-    //   - searched   = applySearch(state.allRows, state.view.searchTerm)
-    //   - filtered   = applyFilters(searched,   state.view.filters)
-    //   - totalFiltered = filtered.length
-    //   - pageCount  = computePageCount(totalFiltered, state.view.pageSize)
-    //   - state.view.page = clampPage(state.view.page, pageCount)   // ← mutate
-    //   - sorted     = applySort(filtered, state.view.sortColumn, state.view.sortDirection)
-    //   - paginated  = applyPagination(sorted, state.view.page, state.view.pageSize)
-    //   - Emit 'view:changed' with the full payload shape documented at the top.
-
+    if (state.status !== 'ready') {
+      return;
+    }
+    
+    const searched = applySearch(state.allRows, state.view.searchTerm);
+    const filtered = applyFilters(searched, state.view.filters);
+    const totalFiltered = filtered.length;
+    const pageCount = computePageCount(totalFiltered, state.view.pageSize);
+    
+    state.view.page = clampPage(state.view.page, pageCount);
+    
+    const sorted = applySort(filtered, state.view.sortColumn, state.view.sortDirection);
+    const paginated = applyPagination(sorted, state.view.page, state.view.pageSize);
+    
+    eventBus.emit('view:changed', {
+      visibleRows: paginated,
+      totalAll: state.allRows.length,
+      totalFiltered: totalFiltered,
+      page: state.view.page,
+      pageCount: pageCount,
+      pageSize: state.view.pageSize,
+      sortColumn: state.view.sortColumn,
+      sortDirection: state.view.sortDirection,
+    });
   }
 
   // -------------------------------------------------------------------------
