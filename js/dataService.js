@@ -240,9 +240,7 @@ export function createDataService(eventBus, dataUrl) {
    * Used after filters/search change to avoid showing "page 7 of 3".
    */
   function clampPage(page, pageCount) {
-    // TODO (6):
-    //   - Math.min(pageCount, Math.max(1, page))
-
+    return Math.min(pageCount, Math.max(1, page));
   }
 
   // -------------------------------------------------------------------------
