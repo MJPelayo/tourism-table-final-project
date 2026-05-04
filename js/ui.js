@@ -263,12 +263,20 @@ export function createUI(eventBus, dataService, rootEl) {
   }
 
   function onFilterChange(domEvent) {
-    // TODO (7):
-    //   - Read domEvent.target.dataset.role (it will be one of
-    //     'filter-district', 'filter-purpose', 'filter-year').
-    //   - Map the role to the filter key ('district', 'purpose', 'year').
-    //   - Call dataService.setFilter(key, domEvent.target.value).
-
+    const role = domEvent.target.dataset.role;
+    let key;
+    
+    if (role === 'filter-district') {
+      key = 'district';
+    } else if (role === 'filter-purpose') {
+      key = 'purpose';
+    } else if (role === 'filter-year') {
+      key = 'year';
+    } else {
+      return;
+    }
+    
+    dataService.setFilter(key, domEvent.target.value);
   }
 
   function onSortHeaderClick(domEvent) {
