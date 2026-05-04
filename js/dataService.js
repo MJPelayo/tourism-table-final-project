@@ -185,16 +185,37 @@ export function createDataService(eventBus, dataUrl) {
   };
 
   function applySort(rows, sortColumn, sortDirection) {
-    // TODO (3):
-    //   - If sortColumn is null, return rows as-is.
-    //   - Clone rows first (never mutate input): `rows.slice()`.
-    //   - Call .sort() on the clone with a comparator that:
-    //       * If sortColumn is 'month', uses MONTH_ORDER[row.month] on both sides.
-    //       * If the values are numbers, subtracts them.
-    //       * Otherwise uses String(a).localeCompare(String(b)).
-    //   - If sortDirection is 'desc', reverse the result.
-    //   - Return the sorted clone.
-
+    if (sortColumn === null) {
+      return rows;
+    }
+    
+    const sorted = rows.slice();
+    
+    sorted.sort((a, b) => {
+      let aVal, bVal;
+      
+      if (sortColumn === 'month') {
+        aVal = MONTH_ORDER[a.month];
+        bVal = MONTH_ORDER[b.month];
+      } else if (typeof a[sortColumn] === 'number') {
+        aVal = a[sortColumn];
+        bVal = b[sortColumn];
+      } else {
+        aVal = String(a[sortColumn]);
+        bVal = String(b[sortColumn]);
+      }
+      
+      if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return aVal - bVal;
+      }
+      return aVal.localeCompare(bVal);
+    });
+    
+    if (sortDirection === 'desc') {
+      sorted.reverse();
+    }
+    
+    return sorted;
   }
 
   /**
