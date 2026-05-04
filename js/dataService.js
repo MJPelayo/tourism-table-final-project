@@ -343,14 +343,13 @@ export function createDataService(eventBus, dataUrl) {
    * Does NOT reset the page (users expect their page to stick on re-sort).
    */
   function setSort(column) {
-    // TODO (11):
-    //   - If state.view.sortColumn === column:
-    //       * flip direction
-    //   - Else:
-    //       * state.view.sortColumn = column
-    //       * state.view.sortDirection = 'asc'
-    //   - recomputeAndEmit()
-
+    if (state.view.sortColumn === column) {
+      state.view.sortDirection = state.view.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      state.view.sortColumn = column;
+      state.view.sortDirection = 'asc';
+    }
+    recomputeAndEmit();
   }
 
   /**
