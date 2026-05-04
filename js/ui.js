@@ -259,12 +259,7 @@ export function createUI(eventBus, dataService, rootEl) {
   // -------------------------------------------------------------------------
 
   function onSearchInput(domEvent) {
-    // TODO (6): call dataService.setSearch(domEvent.target.value).
-    //
-    //   Note on debouncing: for a 276-row dataset this is fine to fire
-    //   on every keystroke. In production you'd debounce; keeping it
-    //   simple here keeps the pattern the focus.
-
+    dataService.setSearch(domEvent.target.value);
   }
 
   function onFilterChange(domEvent) {
