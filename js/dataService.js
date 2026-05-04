@@ -292,19 +292,23 @@ export function createDataService(eventBus, dataUrl) {
    * then 'data:loaded' + 'view:changed' on success, or 'data:loadFailed' on error.
    */
   async function load() {
-    // TODO (8):
-    //   - Set state.status = 'loading' and emit 'data:loading' with null payload.
-    //   - Try: fetch(dataUrl), check response.ok, parse as JSON.
-    //     * If not ok, throw new Error(`HTTP ${response.status}`).
-    //   - On success:
-    //       * state.allRows = the parsed array
-    //       * state.status  = 'ready'
-    //       * emit 'data:loaded' with { totalAll: state.allRows.length }
-    //       * call recomputeAndEmit()  // so the table renders immediately
-    //   - On failure:
-    //       * state.status = 'error'
-    //       * emit 'data:loadFailed' with { message: err.message }
-
+    state.status = 'loading';
+    eventBus.emit('data:loading', null);
+    
+    try {
+      const response = await fetch(dataUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      state.allRows = data;
+      state.status = 'ready';
+      eventBus.emit('data:loaded', { totalAll: state.allRows.length });
+      recomputeAndEmit();
+    } catch (err) {
+      state.status = 'error';
+      eventBus.emit('data:loadFailed', { message: err.message });
+    }
   }
 
   /**
@@ -312,11 +316,9 @@ export function createDataService(eventBus, dataUrl) {
    * leave you stranded on page 5 of old results).
    */
   function setSearch(term) {
-    // TODO (9):
-    //   - state.view.searchTerm = String(term) (defensive)
-    //   - state.view.page = 1
-    //   - recomputeAndEmit()
-
+    state.view.searchTerm = String(term);
+    state.view.page = 1;
+    recomputeAndEmit();
   }
 
   /**
