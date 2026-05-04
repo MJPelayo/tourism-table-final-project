@@ -93,20 +93,43 @@ export function createUI(eventBus, dataService, rootEl) {
    * Security note: use textContent, never innerHTML.
    */
   function buildRowElement(row) {
-    // TODO (1):
-    //   - Create a <tr>.
-    //   - Create 7 <td> cells in this order:
-    //       year, month, country, district, purpose (wrapped in
-    //       a <span class="purpose-badge">), arrivals, avgStayNights.
-    //   - The last two cells must have class "num" (right-aligned monospace).
-    //   - Use formatNumber() on arrivals for thousands separators.
-    //   - avgStayNights can be displayed as-is (already a decimal).
-    //   - Return the <tr>.
-    //
-    //   EXTRA CREDIT: set data-row-id="<row.id>" on the <tr> so the
-    //   row-click handler can read it via event delegation, and so
-    //   showDetail() can find the selected tr to highlight.
-
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-row-id', row.id);
+    
+    const tdYear = document.createElement('td');
+    tdYear.textContent = row.year;
+    tr.appendChild(tdYear);
+    
+    const tdMonth = document.createElement('td');
+    tdMonth.textContent = row.month;
+    tr.appendChild(tdMonth);
+    
+    const tdCountry = document.createElement('td');
+    tdCountry.textContent = row.country;
+    tr.appendChild(tdCountry);
+    
+    const tdDistrict = document.createElement('td');
+    tdDistrict.textContent = row.district;
+    tr.appendChild(tdDistrict);
+    
+    const tdPurpose = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = 'purpose-badge';
+    badge.textContent = row.purpose;
+    tdPurpose.appendChild(badge);
+    tr.appendChild(tdPurpose);
+    
+    const tdArrivals = document.createElement('td');
+    tdArrivals.className = 'num';
+    tdArrivals.textContent = formatNumber(row.arrivals);
+    tr.appendChild(tdArrivals);
+    
+    const tdStay = document.createElement('td');
+    tdStay.className = 'num';
+    tdStay.textContent = row.avgStayNights;
+    tr.appendChild(tdStay);
+    
+    return tr;
   }
 
   /**
