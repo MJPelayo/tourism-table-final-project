@@ -232,9 +232,7 @@ export function createDataService(eventBus, dataUrl) {
    * At least 1 (so "Page 1 of 1" displays even when there are 0 rows).
    */
   function computePageCount(rowCount, pageSize) {
-    // TODO (5):
-    //   - Math.max(1, Math.ceil(rowCount / pageSize))
-
+    return Math.max(1, Math.ceil(rowCount / pageSize));
   }
 
   /**
