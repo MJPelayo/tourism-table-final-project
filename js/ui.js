@@ -230,28 +230,35 @@ export function createUI(eventBus, dataService, rootEl) {
    * Also add .is-selected to the corresponding table row (if visible).
    */
   function showDetail(row) {
-    // TODO (BONUS-UI-1):
-    //   - Set textContent on each detail-* field:
-    //       detailYear, detailMonth, detailCountry, detailDistrict,
-    //       detailPurpose, detailId
-    //   - detailArrivals:   use formatNumber(row.arrivals)
-    //   - detailStay:       `${row.avgStayNights} nights`
-    //   - Add 'is-visible' class to els.detail.
-    //   - Set aria-hidden="false" on els.detail.
-    //   - Find the <tr> in the tbody with matching data-row-id (see
-    //     buildRowElement bonus TODO below) and add 'is-selected'.
-
+    els.detailYear.textContent = row.year;
+    els.detailMonth.textContent = row.month;
+    els.detailCountry.textContent = row.country;
+    els.detailDistrict.textContent = row.district;
+    els.detailPurpose.textContent = row.purpose;
+    els.detailArrivals.textContent = formatNumber(row.arrivals);
+    els.detailStay.textContent = `${row.avgStayNights} nights`;
+    els.detailId.textContent = row.id;
+    
+    els.detail.classList.add('is-visible');
+    els.detail.setAttribute('aria-hidden', 'false');
+    
+    const selectedRow = els.tbody.querySelector(`tr[data-row-id="${row.id}"]`);
+    if (selectedRow) {
+      selectedRow.classList.add('is-selected');
+    }
   }
 
   /**
    * Close the modal and clear any row highlight.
    */
   function hideDetail() {
-    // TODO (BONUS-UI-2):
-    //   - Remove 'is-visible' class from els.detail.
-    //   - Set aria-hidden="true" on els.detail.
-    //   - Remove 'is-selected' from whichever tbody tr currently has it.
-
+    els.detail.classList.remove('is-visible');
+    els.detail.setAttribute('aria-hidden', 'true');
+    
+    const selectedRow = els.tbody.querySelector('tr.is-selected');
+    if (selectedRow) {
+      selectedRow.classList.remove('is-selected');
+    }
   }
 
   // -------------------------------------------------------------------------
