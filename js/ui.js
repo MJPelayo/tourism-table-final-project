@@ -280,11 +280,11 @@ export function createUI(eventBus, dataService, rootEl) {
   }
 
   function onSortHeaderClick(domEvent) {
-    // TODO (8):
-    //   - Find the closest <th> ancestor with data-sort-column.
-    //   - Read the column name from its dataset.
-    //   - Call dataService.setSort(column).
-
+    const th = domEvent.target.closest('th[data-sort-column]');
+    if (!th) return;
+    
+    const column = th.getAttribute('data-sort-column');
+    dataService.setSort(column);
   }
 
   function onResetClick() {
