@@ -288,14 +288,11 @@ export function createUI(eventBus, dataService, rootEl) {
   }
 
   function onResetClick() {
-    // TODO (9):
-    //   - Clear all input/select values in the DOM:
-    //       els.search.value = '';
-    //       els.filterDistrict.value = '';
-    //       els.filterPurpose.value = '';
-    //       els.filterYear.value = '';
-    //   - Call dataService.resetView().
-
+    els.search.value = '';
+    els.filterDistrict.value = '';
+    els.filterPurpose.value = '';
+    els.filterYear.value = '';
+    dataService.resetView();
   }
 
   // Pagination handlers — each calls setPage with the right number.
