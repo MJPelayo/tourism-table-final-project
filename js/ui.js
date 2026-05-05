@@ -322,12 +322,14 @@ export function createUI(eventBus, dataService, rootEl) {
    * Uses event delegation on els.tbody (already wired in mount).
    */
   function onRowClick(domEvent) {
-    // TODO (BONUS-UI-3):
-    //   - Find the closest <tr> ancestor of domEvent.target.
-    //   - If none, or if the tr has class 'empty-row', return.
-    //   - Read data-row-id from its dataset and convert to Number.
-    //   - Call dataService.selectRow(id).
-
+    const tr = domEvent.target.closest('tr');
+    if (!tr) return;
+    if (tr.classList.contains('empty-row')) return;
+    
+    const rowId = tr.getAttribute('data-row-id');
+    if (rowId) {
+      dataService.selectRow(Number(rowId));
+    }
   }
 
   /**
@@ -376,6 +378,15 @@ export function createUI(eventBus, dataService, rootEl) {
       renderStatus(payload.totalFiltered, payload.totalAll, payload.visibleRows.length);
       currentPage = payload.page;
       currentPageCount = payload.pageCount;
+    });
+    
+    // EXTRA CREDIT subscriptions
+    subscribe('row:selected', (payload) => {
+      showDetail(payload.row);
+    });
+    
+    subscribe('row:deselected', () => {
+      hideDetail();
     });
   }
 
