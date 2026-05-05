@@ -354,26 +354,22 @@ export function createUI(eventBus, dataService, rootEl) {
   }
 
   function wireSubscriptions() {
-    // TODO (10): wire all four event types.
-    //
-    //   - 'data:loading'    → showStatus('Loading tourism data…')
-    //
-    //   - 'data:loadFailed' → showStatus(`Failed to load data: ${message}`, { error: true })
-    //
-    //   - 'view:changed' with payload { visibleRows, totalFiltered, totalAll,
-    //                                   page, pageCount, sortColumn, sortDirection }:
-    //       * renderTable(visibleRows)
-    //       * renderSortIndicators(sortColumn, sortDirection)
-    //       * renderPagination(page, pageCount)
-    //       * renderStatus(totalFiltered, totalAll, visibleRows.length)
-    //       * update currentPage and currentPageCount (needed by pagination handlers)
-    //
-    //   'data:loaded' can be skipped — 'view:changed' fires right after.
-    //
-    //   EXTRA CREDIT — also subscribe to:
-    //   - 'row:selected'   → showDetail(row)
-    //   - 'row:deselected' → hideDetail()
-
+    subscribe('data:loading', () => {
+      showStatus('Loading tourism data…');
+    });
+    
+    subscribe('data:loadFailed', (payload) => {
+      showStatus(`Failed to load data: ${payload.message}`, { error: true });
+    });
+    
+    subscribe('view:changed', (payload) => {
+      renderTable(payload.visibleRows);
+      renderSortIndicators(payload.sortColumn, payload.sortDirection);
+      renderPagination(payload.page, payload.pageCount);
+      renderStatus(payload.totalFiltered, payload.totalAll, payload.visibleRows.length);
+      currentPage = payload.page;
+      currentPageCount = payload.pageCount;
+    });
   }
 
   // -------------------------------------------------------------------------
